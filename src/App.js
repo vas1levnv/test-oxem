@@ -2,6 +2,8 @@ import React, {useEffect, useState} from "react";
 import Slider from "./components/Slider/Slider";
 import s from './App.module.scss'
 import axios from "axios";
+import SliderPercent from "./components/SliderPercent/SliderPercent";
+import preloaderImg from './assets/img/preloader.svg'
 
 function App() {
     let [price, setValueAuto] = useState(3300000)
@@ -19,7 +21,7 @@ function App() {
         setValueLeasing(event.target.value)
     }
 
-    const [data, setData] = useState(null);
+    const [preloader, setPreloader] = useState(false);
 
     const initial = price * initialPrize / 100
 
@@ -45,53 +47,68 @@ function App() {
             withCredentials: true,
             credentials: 'same-origin',
         }
+        setPreloader(true)
+
+
         axios.post(
             'https://hookb.in/eK160jgYJ6UlaRPldJ1P',
             info,
             {headers: headers}
         ).then(function (response) {
-            console.log(response);
+            console.log(response)
+
+        }).finally(() => {
+            setTimeout(() => {
+                setPreloader(false)
+            }, 2000)
         })
     }
 
     return (
         <div className={s.app}>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <div>Стоимость автомобиля</div>
-                    <Slider value={price}
-                            min={1000000}
-                            max={6000000}
-                            step={1000}
-                            handleChange={handleChangeAuto}/>
-                </div>
-                <div>
-                    <div>Первоначальный взнос</div>
-                    <Slider value={initialPrize}
-                            initial={initial}
-                            min={10}
-                            max={60}
-                            step={1}
-                            handleChange={handleChangeInitialPrize}/>
-                </div>
-                <div>
-                    <div>Срок лизинга</div>
-                    <Slider value={months}
-                            min={1}
-                            max={60}
-                            step={1}
-                            handleChange={handleChangeLeasing}/>
-                </div>
-                <div>
-                    <div>Сумма договора лизинга</div>
-                    <div>{totalSum}</div>
-                </div>
-                <div>
-                    <div>Ежемесячный платеж от</div>
-                    <div>{monthPay}</div>
-                </div>
-                <input type="submit"/>
-            </form>
+            <div className={s.appWrapper}>
+                <h1 className={s.mainText}>Рассчитайте стоимость<br/>автомобиля в лизинг</h1>
+                <form onSubmit={handleSubmit}>
+                    <div>
+                        <div className={s.title}>Стоимость автомобиля</div>
+                        <Slider value={price}
+                                min={1000000}
+                                max={6000000}
+                                step={1000}
+                                handleChange={handleChangeAuto}/>
+                    </div>
+                    <div>
+                        <div className={s.title}>Первоначальный взнос</div>
+                        <SliderPercent value={initialPrize}
+                                       initial={initial}
+                                       min={10}
+                                       max={60}
+                                       step={1}
+                                       handleChange={handleChangeInitialPrize}/>
+                    </div>
+                    <div>
+                        <div className={s.title}>Срок лизинга</div>
+                        <Slider value={months}
+                                min={1}
+                                max={60}
+                                step={1}
+                                handleChange={handleChangeLeasing}/>
+                    </div>
+                    <div className={s.sum}>
+                        <div className={s.title}>Сумма договора лизинга</div>
+                        <div className={s.mainText}>{totalSum}</div>
+                    </div>
+                    <div className={s.sum}>
+                        <div className={s.title}>Ежемесячный платеж от</div>
+                        <div className={s.mainText}>{monthPay}</div>
+                    </div>
+                    <button className={s.btn} type="submit">
+                        {preloader ? <div><img src={preloaderImg} alt=""/></div> : <div>Отправить</div>}
+                    </button>
+
+
+                </form>
+            </div>
         </div>
     );
 }
