@@ -1,8 +1,0 @@
-.app form {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    justify-items: center;
-    height: fit-content;
-    margin-top: 200px;
-    gap: 50px;
-}

@@ -1,0 +1,20 @@
+@import './assets/fonts/Gilroy/stylesheet.css';
+@import './assets/fonts/Nekst/stylesheet.css';
+
+$blue: #3bbfce;
+
+.app {
+  min-width: 320px;
+  max-width: 1440px;
+  font-family: Nekst;
+
+  form {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: center;
+    height: fit-content;
+    margin-top: 200px;
+    gap: 50px;
+    color: $blue
+  }
+}

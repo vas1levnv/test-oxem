@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
-import * as events from "events";
 import Slider from "./components/Slider/Slider";
-import s from './App.module.css'
+import s from './App.module.scss'
 import axios from "axios";
 
 function App() {
