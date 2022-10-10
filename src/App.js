@@ -22,6 +22,7 @@ function App() {
     }
 
     const [preloader, setPreloader] = useState(false);
+    const [disabled, setDisabled] = useState(false);
 
     const initial = price * initialPrize / 100
 
@@ -48,28 +49,32 @@ function App() {
             credentials: 'same-origin',
         }
         setPreloader(true)
-
+        setDisabled(true)
 
         axios.post(
             'https://hookb.in/eK160jgYJ6UlaRPldJ1P',
-            info,
+            {info},
             {headers: headers}
-        ).then(function (response) {
-            console.log(response)
-
-        }).finally(() => {
+        ).then(res => {
+            console.log(res);
+            console.log(res.data);
+        }).finally(() => { //TODO: временное решение так как не работает API
+            let response = {success: true}
             setTimeout(() => {
                 setPreloader(false)
+                setDisabled(false)
             }, 2000)
         })
+
+
     }
 
     return (
         <div className={s.app}>
             <div className={s.appWrapper}>
-                <h1 className={s.mainText}>Рассчитайте стоимость<br/>автомобиля в лизинг</h1>
+                <h1>Рассчитайте стоимость<br/>автомобиля в лизинг</h1>
                 <form onSubmit={handleSubmit}>
-                    <div>
+                    <div className={s.item}>
                         <div className={s.title}>Стоимость автомобиля</div>
                         <Slider value={price}
                                 min={1000000}
@@ -77,7 +82,7 @@ function App() {
                                 step={1000}
                                 handleChange={handleChangeAuto}/>
                     </div>
-                    <div>
+                    <div className={s.item}>
                         <div className={s.title}>Первоначальный взнос</div>
                         <SliderPercent value={initialPrize}
                                        initial={initial}
@@ -86,7 +91,7 @@ function App() {
                                        step={1}
                                        handleChange={handleChangeInitialPrize}/>
                     </div>
-                    <div>
+                    <div className={s.item}>
                         <div className={s.title}>Срок лизинга</div>
                         <Slider value={months}
                                 min={1}
@@ -102,11 +107,10 @@ function App() {
                         <div className={s.title}>Ежемесячный платеж от</div>
                         <div className={s.mainText}>{monthPay}</div>
                     </div>
-                    <button className={s.btn} type="submit">
-                        {preloader ? <div><img src={preloaderImg} alt=""/></div> : <div>Отправить</div>}
+                    <button className={s.btn} disabled={disabled} type="submit">
+                        {preloader ? <div><img className={s.image} src={preloaderImg} alt=""/></div> :
+                            <div>Оставить заявку</div>}
                     </button>
-
-
                 </form>
             </div>
         </div>

@@ -10,12 +10,29 @@
   .number {
     background: #F3F3F4;
     border-radius: 16px;
-    padding: 16px 24px;
+    padding: 20px;
     font-weight: 900;
-    font-size: 30px;
-    line-height: 36px;
+    font-size: 22px;
+    line-height: 20px;
     color: $grey;
     border: none;
+  }
+
+  .percent {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 67px;
+    height: 48px;
+    border-radius: 10px;
+    background: #EBEBEC;
+    border: none;
+    text-align: center;
+    font-weight: 900;
+    font-size: 20px;
+    line-height: 120%;
+    color: $grey;
+
   }
 
   input[type=range] {
@@ -24,7 +41,7 @@
     left: 20px;
     -webkit-appearance: none;
     margin: 10px 0;
-    width: 90%;
+    width: calc(100% - 40px);
   }
 
   input[type=range]::-webkit-slider-runnable-track {
