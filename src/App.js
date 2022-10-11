@@ -4,6 +4,7 @@ import s from './App.module.scss'
 import axios from "axios";
 import SliderPercent from "./components/SliderPercent/SliderPercent";
 import preloaderImg from './assets/img/preloader.svg'
+import Popup from "./components/Popup/Popup";
 
 function App() {
     let [price, setValueAuto] = useState(3300000)
@@ -23,6 +24,8 @@ function App() {
 
     const [preloader, setPreloader] = useState(false);
     const [disabled, setDisabled] = useState(false);
+    const [popupActive, setPopupActive] = useState(false)
+
 
     const initial = price * initialPrize / 100
 
@@ -40,6 +43,8 @@ function App() {
         "monthly_payment_from": monthPay
     }
 
+    let infoJSON = JSON.stringify(info)
+
     function handleSubmit(event) {
         event.preventDefault()
         const headers = {
@@ -53,8 +58,8 @@ function App() {
 
         axios.post(
             'https://hookb.in/eK160jgYJ6UlaRPldJ1P',
-            {info},
-            {headers: headers}
+            infoJSON,
+            headers
         ).then(res => {
             console.log(res);
             console.log(res.data);
@@ -63,10 +68,9 @@ function App() {
             setTimeout(() => {
                 setPreloader(false)
                 setDisabled(false)
+                setPopupActive(true)
             }, 2000)
         })
-
-
     }
 
     return (
@@ -80,6 +84,8 @@ function App() {
                                 min={1000000}
                                 max={6000000}
                                 step={1000}
+                                text={'₽'}
+                                disabled={disabled}
                                 handleChange={handleChangeAuto}/>
                     </div>
                     <div className={s.item}>
@@ -89,6 +95,7 @@ function App() {
                                        min={10}
                                        max={60}
                                        step={1}
+                                       disabled={disabled}
                                        handleChange={handleChangeInitialPrize}/>
                     </div>
                     <div className={s.item}>
@@ -97,21 +104,27 @@ function App() {
                                 min={1}
                                 max={60}
                                 step={1}
+                                text={'мес.'}
+                                disabled={disabled}
                                 handleChange={handleChangeLeasing}/>
                     </div>
                     <div className={s.sum}>
                         <div className={s.title}>Сумма договора лизинга</div>
-                        <div className={s.mainText}>{totalSum}</div>
+                        <div className={s.mainText}>{totalSum} ₽</div>
                     </div>
                     <div className={s.sum}>
                         <div className={s.title}>Ежемесячный платеж от</div>
-                        <div className={s.mainText}>{monthPay}</div>
+                        <div className={s.mainText}>{monthPay} ₽</div>
                     </div>
                     <button className={s.btn} disabled={disabled} type="submit">
-                        {preloader ? <div><img className={s.image} src={preloaderImg} alt=""/></div> :
+                        {preloader ?
+                            <div className={s.btnImg}><img className={s.image} src={preloaderImg} alt=""/></div> :
                             <div>Оставить заявку</div>}
                     </button>
                 </form>
+                <Popup active={popupActive} setActive={setPopupActive}>
+                    Ваша заявка принята
+                </Popup>
             </div>
         </div>
     );

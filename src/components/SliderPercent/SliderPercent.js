@@ -7,11 +7,14 @@ function SliderPercent(props) {
         {props.initial && <div className={s.number}>
             {props.initial}
         </div>}
-        <input className={s.percent} value={props.value} onChange={props.handleChange}/>
+        <input className={s.percent} value={`${props.value} %`}
+               disabled={props.disabled}
+               onChange={props.handleChange}/>
         <input type="range" defaultValue={props.value}
                min={props.min}
                max={props.max}
                step={props.step}
+               disabled={props.disabled}
                onChange={props.handleChange}/>
     </div>
 }
