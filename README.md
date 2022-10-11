@@ -1,3 +1,8 @@
+
+Проект собран на React и Scss
+В папке build собран проект на deploy
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
